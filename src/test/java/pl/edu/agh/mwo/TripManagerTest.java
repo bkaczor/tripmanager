@@ -37,6 +37,6 @@ public class TripManagerTest {
 		assertEquals(1, tripManager.getTrips().size());
 		tripManager.remove(trip.getName());
 		assertEquals(0, tripManager.getTrips().size());
-		fail("chcemy zespuc");
+		fail("chcemy zepsuc");
 		}
 }
