@@ -1,28 +1,67 @@
 package pl.edu.agh.mwo;
 import java.util.*;
 
-public class TripManager {
+class TripManager {
 	private HashMap<String,Trip> tripList;
 	
-	public TripManager() {
-		tripList = new HashMap<String,Trip>();
+	TripManager() {
+		tripList = new HashMap<>();
 	}
 	
-	public void add(Trip trip) throws TripAlreadyExistsException {
-		if (tripList.get(trip.getName()) != null) {
+	void add(Trip trip) throws TripAlreadyExistsException {
+		if (tripAlreadyExist(trip))
 			throw new TripAlreadyExistsException();
-		}
-		else {
-			tripList.put(trip.getName(),trip);
-		}
+		tripList.put(trip.getName(),trip);
 	}
-	
-	public HashMap<String,Trip> getTrips() {
+
+	HashMap<String,Trip> getTrips() {
 		return tripList;
 	}
 
-	public void remove(String name) {
+	Trip findTrip(String keyWord) {
+		if (keyWord == null || keyWord.isEmpty())
+			return null;
+
+		return findTripViaTripNames(keyWord.toLowerCase());
+	}
+
+	private Trip findTripViaTripNames(String key) {
+		for (String tripName: tripList.keySet()) {
+			if(tripName.toLowerCase().contains(key)) {
+				return tripList.get(tripName);
+			}
+		}
+		return findTripViaDescription(key);
+	}
+
+	private Trip findTripViaDescription(String key) {
+		for (String tripName: tripList.keySet()) {
+			Trip trip = tripList.get(tripName);
+
+			if (trip.getDescription().toLowerCase().contains(key))
+				return trip;
+		}
+		return findTripViaPhotoComment(key);
+	}
+
+	private Trip findTripViaPhotoComment(String key) {
+		for (String tripName: tripList.keySet()) {
+			Trip trip = tripList.get(tripName);
+
+			for (Photo photo: trip.getAlbum().getPhotos()) {
+				if(photo.getComment().toLowerCase().contains(key))
+					return trip;
+			}
+		}
+		return null;
+	}
+
+	void remove(String name) {
 		tripList.remove(name);
 	}
-	
+
+	private boolean tripAlreadyExist(Trip trip) {
+		return tripList.containsKey(trip.getName());
+	}
+
 }

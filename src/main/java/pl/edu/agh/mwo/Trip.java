@@ -1,27 +1,37 @@
 package pl.edu.agh.mwo;
 
-public class Trip {
+class Trip {
 	private String name;
 	private String description;
+	private Album tripAlbum;
 	
-	public Trip(String name, String description) {
+	Trip(String name, String description) {
 		this.name = name;
 		this.description = description;
+		tripAlbum = new Album();
 	}
 
-	public String getName() {
+	String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
+	void setName(String name) {
 		this.name = name;
 	}
 
-	public String getDescription() {
+	String getDescription() {
 		return description;
 	}
 
-	public void setDescription(String description) {
+	void setDescription(String description) {
 		this.description = description;
+	}
+
+	void addPhotoToTripAlbum(Photo photo) {
+		tripAlbum.addPhoto(photo);
+	}
+
+	Album getAlbum() {
+		return tripAlbum;
 	}
 }
